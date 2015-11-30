@@ -28,7 +28,7 @@
 **/
 
 angular.module( "ngAutocomplete", [])
-  .directive('ngAutocomplete', function() {
+  .directive('ngAutocomplete', function($timeout) {
     return {
       require: 'ngModel',
       scope: {
@@ -160,6 +160,15 @@ angular.module( "ngAutocomplete", [])
         scope.$watch(scope.watchOptions, function () {
           initOpts()
         }, true);
+
+        $timeout(function(){
+          var predictionContainer = angular.element(document.getElementsByClassName('pac-container'));
+          predictionContainer.attr('data-tap-disabled', true);
+          predictionContainer.css('pointer-events', 'auto');
+          predictionContainer.bind('click', function(arg){                    
+            element[0].blur();
+          });  
+        }, 500);
 
       }
     };
